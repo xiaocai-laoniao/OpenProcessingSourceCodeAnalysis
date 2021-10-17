@@ -62,11 +62,14 @@ class SpringBox {
     this.spDamp = 0.2;
     this.spVel = 0;
 
+    // 设置递归的终止条件，限定递归的深度
     if (dc < MAX_DIV) {
+      // 如果递归的次数为偶数，则竖线切分，按照divRatio切分成左右
       if (dc % 2 == 0) {
         this.children[0] = new SpringBox(x, y, w * this.divRatio, h, dc + 1);
         this.children[1] = new SpringBox(x + w * this.divRatio, y, w * (1 - this.divRatio), h, dc + 1);
       } else {
+        // 如果递归的次数为奇数，则横向切分，按照divRatio切分成上下
         this.children[0] = new SpringBox(x, y, w, h * this.divRatio, dc + 1);
         this.children[1] = new SpringBox(x, y + h * this.divRatio, w, h * (1 - this.divRatio), dc + 1);
       }
@@ -84,12 +87,13 @@ class SpringBox {
     if (mouseIsPressed) {
       this.targetDivRatio = 0.5;
     } 
-    // 按照初始化时随机的方块变动时间间隔这样的频率，进行随机一个目标比例
+    // 按照初始化时随机得到的【方块变动时间间隔】这样的频率，否则方块就一直在动，不喘息
+    // 随机一个目标比例
     else if (frameCount % this.moveTimeSpan == 0) {
       this.targetDivRatio = random(0.15, 0.85);
     }
 
-    // 弹性
+    // 缓动的算法，让divRatio按照缓动方式逼近targetDivRatio
     let f = this.spK * (this.targetDivRatio - this.divRatio);
     let accel = f / this.spMass;
     this.spVel = this.spDamp * (this.spVel + accel);
