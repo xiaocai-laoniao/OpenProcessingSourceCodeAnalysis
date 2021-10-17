@@ -96,7 +96,7 @@ class SpringBox {
     this.divRatio += this.spVel;
     
     // 一般的缓动减速
-    // this.divRatio += (this.targetDivRatio - this.divRatio) * 0.02;
+    // this.divRatio += (this.targetDivRatio - this.divRatio) * 0.01;
 
     for (const c of this.children) c.updateDiv();
   }
@@ -131,6 +131,7 @@ class SpringBox {
     }
   }
 
+  // 递归更新坐标和尺寸大小
   updateTL(x, y, w, h) {
     this.x = x;
     this.y = y;
@@ -164,4 +165,10 @@ function createCols(url) {
   let colStr = url.slice(slaIndex + 1);
   let cols = colStr.split("-");
   return cols.map(c => "#" + c);
+}
+
+function keyPressed() {
+  if (key == 's' || key == 'S') {
+    save("box.png");
+  }
 }
