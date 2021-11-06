@@ -14,8 +14,8 @@ class Particle {
     radius    = int(scale * 40);
     border    = MIN_BORDER + 1;		
     incBorder = 1;
-    //type      = int(random(2));
-    type = 0;
+    type      = int(random(2));
+    // type = 0;
   }
 
   // 速度和位置的更新
@@ -23,11 +23,15 @@ class Particle {
     location.add(velocity);
     // 抖动效果的终极秘诀：始终让粒子本身在文字黑色像素抖动
     // 按照目前的速度，下一个帧循环中，当前像素的左右像素是非黑色（非文字像素）时，则将x轴速度乘以-1进行反向
-    if ((list[int(location.y)*width+int(location.x+velocity.x)]==1)   ||   (list[int(location.y)*width+int(location.x-velocity.x)]==1)) {  
+    int nextLocX1 = int(location.y) * width + int(location.x + velocity.x);
+    int nextLocX2 = int(location.y) * width + int(location.x - velocity.x);
+    if ((list[nextLocX1] == 1)   ||   (list[nextLocX2] == 1)) {
       velocity.x *= -1;
     }
     // 按照目前的速度，下一个帧循环中，当前像素的上下像素是非黑色（非文字像素）时，则将y轴速度乘以-1进行反向
-    if ((list[int(location.y+velocity.y)*width+int(location.x)]==1) || (list[int(location.y-velocity.y)*width+int(location.x)]==1)) {  
+    int nextLocY1 = int(location.y + velocity.y) * width + int(location.x);
+    int nextLocY2 = int(location.y - velocity.y) * width + int(location.x);
+    if ((list[nextLocY1] == 1) || (list[nextLocY2] == 1)) {
       velocity.y *= -1;
     }
   }
